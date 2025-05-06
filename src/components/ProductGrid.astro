@@ -1,0 +1,28 @@
+---
+import ProductCard from "./ProductCard.astro";
+
+// FETCH PRODUCTS
+
+const data = await fetch('https://dummyjson.com/products')
+.then(res => res.json()).then(data => data.products)
+
+
+---
+
+<section>
+    <ul>
+        {data.map((product: any) => {
+            return <ProductCard img={product.thumbnail} title={product.title} price={product.price} path={product.id} />
+        })}
+        
+    </ul>
+</section>
+
+<style>
+    ul {
+        padding: 2rem 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+</style>

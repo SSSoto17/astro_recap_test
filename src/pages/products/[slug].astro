@@ -1,0 +1,41 @@
+---
+import Image from "astro/components/Image.astro"
+import MainLayout from "../../layout/MainLayout.astro";
+
+export async function getStaticPaths() {
+    const data = await fetch('https://dummyjson.com/products')
+.then(res => res.json()).then(data => data.products)
+  return data.map((product: any) => ({
+    params: {slug: product.id},
+    props: {product}
+  }))
+}
+
+const { product } = Astro.props;
+
+---
+
+<MainLayout>
+    <section>
+        <Image src={product.images[0]} alt={product.title} inferSize />
+        <article>
+            <h1>{product.title}</h1>
+            <p>{product.description}</p>
+            <p>{product.price},-</p>
+        </article>
+    </section>
+</MainLayout>
+
+<style>
+    section {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        padding: 2rem 1rem;
+        }
+
+        article {
+            display: grid;
+            gap: 2rem;
+        }
+</style>
